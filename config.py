@@ -10,3 +10,5 @@ TOKEN = os.environ.get("TOKEN")
 PATH_TO_SERVER = os.environ.get("SERVER")
 
 GET_UNIVERSE = "/player/universe"
+
+TRAVEL = "/player/travel"
