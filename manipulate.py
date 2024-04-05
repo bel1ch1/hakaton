@@ -2,6 +2,23 @@
 
 
 
+def IsGarbValid(__garb, __capacityX, __capacityY):
+    """Checks and returns if Garbage location is valid
+    * `__garb`: garbage to validate
+    * `__capacityX`: ship's storage capacity's width
+    * `__capacityY`: ship's storage capacity's height
+    """
+    
+    for _tile in __garb:
+        if _tile[0] < 0: return False
+        if _tile[1] < 0: return False
+        if _tile[0] >= __capacityX: return False
+        if _tile[1] >= __capacityY: return False
+
+    return True
+
+
+
 def RotateGarbage(__garb):
     """Rotates garbage clockwise once.
     
