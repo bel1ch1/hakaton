@@ -2,7 +2,7 @@
 
 
 
-def IsGarbValid(__garb, __capacityX, __capacityY):
+def IsGarbValid(__garb:list[list[int]], __capacityX:int, __capacityY:int):
     """Checks and returns if Garbage location is valid
     * `__garb`: garbage to validate
     * `__capacityX`: ship's storage capacity's width
@@ -19,7 +19,7 @@ def IsGarbValid(__garb, __capacityX, __capacityY):
 
 
 
-def RotateGarbage(__garb):
+def RotateGarbage(__garb:list[list[int]]):
     """Rotates garbage clockwise once.
     
     * `__garb`: garbage to rotate
@@ -65,3 +65,15 @@ def MoveGarbage(__garb:list[list[int]], __x:int, __y:int):
 
     # return
     return manipulated_garb
+
+
+
+def StoreGarbage(__pGarbs:dict[str, list[list[int]]], __sGarbs:dict[str, list[list[int]]], __capacityX:int, __capacityY:int):
+    """Fills ship storage with garbage.
+    * `__pGarbs`: garbage located on the planet
+    * `__sGarbs`: garbage located on the ship (!) is edited (!)
+    * `__capacityX`: ship's storage capacity's width
+    * `__capacityY`: ship's storage capacity's height
+    """
+
+    __sGarbs[list(__pGarbs.keys())[0]] = list(__pGarbs.values())[0]
