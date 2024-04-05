@@ -19,3 +19,15 @@ def RotateGarbage(__garb):
         ]
         for _tile in __garb
     ]
+
+
+def MoveGarbage(__garb, __x, __y):
+
+    # moave and return
+    return [
+        [
+            _tile[0] + __x,
+            _tile[1] + __y
+        ]
+        for _tile in __garb
+    ]
