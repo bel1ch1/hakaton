@@ -72,4 +72,4 @@ def MakeGarbage():
         new_garbage
     ))
 
-    return (MakeName(), new_garbage)
+    return new_garbage
