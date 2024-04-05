@@ -1,16 +1,17 @@
-from typing import List
+from typing import Dict
+import json
 
 
-# Парсим json
-def json_serializer():
-    pass
+class Generate_path:
+    def __init__(self, current_universe):
+        self.universe = current_universe
+
+    # Получаем текущую инфу о планетах
+    def currency_universe(universe) -> Dict:
+        uverse = json.loads(universe)
+        return uverse
 
 
-# Получаем текушию инфу о планетах
-def currency_universe() -> List:
-    pass
-
-
-# Генерим путь по которому полетим
-def generate_path() -> List:
-    pass
+    # Генерим путь по которому полетим
+    def generate_path(dict_data):
+        pass
