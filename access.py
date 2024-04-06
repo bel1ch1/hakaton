@@ -2,6 +2,7 @@ import requests
 from config import PATH_TO_SERVER, TOKEN, GET_UNIVERSE, TRAVEL, COLLECT, RESET, ROUND
 import time
 from storage import StoreGarbage
+import json
 
 headers = {
     "X-Auth-Token" : f"{TOKEN}",
@@ -58,7 +59,7 @@ def make_move(movet_movet):
 
 def sent_data_collected_garb(collected_garb):
     collect = requests.post(PATH_TO_SERVER+COLLECT, headers=headers3, json=collected_garb)
-    print(collect.text)
+    return collect.text
 
 
 def raund_info():
@@ -110,13 +111,15 @@ if universe.status_code == 200:
     end = find_stok(STOK)
     generate_path(end)
     roudrev = roud[-2::-1]
-    # for i in range(len(roudrev)-1):
-    #     mv = generate_movet_movet(roudrev, i)
-    #     tetris_logic()
-    #     #time.sleep(0.15)
-    #     print(mv)
-    #     res = make_move(mv)
-    #     print(res)
+    for i in range(len(roudrev)-1):
+        mv = generate_movet_movet(roudrev, i)
+        #time.sleep(0.15)
+        print(mv)
+        res = make_move(mv)
+        json.dump(res)
+        d, statsu = StoreGarbage(res["planetGarbage"], res["shipGarbage"] if res["shipGarbage"] != None else {})
+        sent_data_collected_garb(collected_garb=d)
+        print(res)
     #restart()
     roud()
 

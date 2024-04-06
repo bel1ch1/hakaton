@@ -16,3 +16,5 @@ TRAVEL = "/player/travel"
 COLLECT = "/player/collect"
 
 RESET = "/player/reset"
+
+ROUND = "/player/rounds"
