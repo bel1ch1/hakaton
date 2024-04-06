@@ -14,3 +14,5 @@ GET_UNIVERSE = "/player/universe"
 TRAVEL = "/player/travel"
 
 COLLECT = "/player/collect"
+
+RESET = "/player/reset"
