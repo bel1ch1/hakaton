@@ -5,14 +5,25 @@ import garbage
 
 
 STORAGE = []
+
+STORAGE_GARB_WEIGHT_AREA = 1
+STORAGE_GARB_WEIGHT_DIMENSIONS = -1
 def StoreGarbage(__pGarbs:dict[str, list[list[int]]], __sGarbs:dict[str, list[list[int]]], __capacityX:int, __capacityY:int):
     """Fills ship storage with garbage.
+
+    Arguments:
     * `__pGarbs`: garbage located on the planet
-    * `__sGarbs`: garbage located on the ship (!) is edited (!)
+    * `__sGarbs`: garbage located on the ship
     * `__capacityX`: ship's storage capacity's width
     * `__capacityY`: ship's storage capacity's height
+
+    Returns two values:
+    * Dictionary of placed garbs
+    *
     """
 
+    # make field of "how many adjacent tiles are occupied"
+    # also, if tile is occupied itself, it's value is >4
     connections_field = [
         [
             0 + (1 if x == 0 or x == __capacityX-1 else 0)
@@ -35,15 +46,21 @@ def StoreGarbage(__pGarbs:dict[str, list[list[int]]], __sGarbs:dict[str, list[li
         _CutConnections(_garb)
 
     # sort garb
-    # TODO
+    __pGarbs = {
+        k: v for k, v in sorted(
+            __pGarbs.items(), 
+            key=lambda _item: 
+                len(_item[1]) * STORAGE_GARB_WEIGHT_AREA
+                + max([_tile[0] for _tile in _garb]) * STORAGE_GARB_WEIGHT_DIMENSIONS
+                + max([_tile[1] for _tile in _garb]) * STORAGE_GARB_WEIGHT_DIMENSIONS
+        )
+    }
 
     # find best position for each garb
     _placed_trash = {}
+    _is_all_placed = True
     for _name, _garb in __pGarbs.items():
 
-        _garbBestLocationX=0
-        _garbBestLocationY=0
-        _garbBestLocationR=0
         _garbBestLocationW=-1
         _garbBest=_garb
 
@@ -66,18 +83,15 @@ def StoreGarbage(__pGarbs:dict[str, list[list[int]]], __sGarbs:dict[str, list[li
                             _wI += connections_field[_tile[0]][_tile[1]]
 
                     if _valid_position and _wI > _garbBestLocationW:
-                        _garbBestLocationX=_xI
-                        _garbBestLocationY=_yI
-                        _garbBestLocationR=_rotI
                         _garbBestLocationW=_wI
                         _garbBest=_garbI
 
         # if possible to position 
         if _garbBestLocationW == -1: 
-            print("CANNOT STORE GARBAGE")
+            _is_all_placed = False
             continue
 
         # add garb in best position
         _placed_trash[_name] = _garbBest
         _CutConnections(_garbBest)
-    return _placed_trash
+    return (_placed_trash, _is_all_placed)
