@@ -1,7 +1,7 @@
 import requests
-from config import PATH_TO_SERVER, TOKEN, GET_UNIVERSE, TRAVEL, COLLECT, RESET
+from config import PATH_TO_SERVER, TOKEN, GET_UNIVERSE, TRAVEL, COLLECT, RESET, ROUND
 import time
-
+from storage import StoreGarbage
 
 headers = {
     "X-Auth-Token" : f"{TOKEN}",
@@ -61,10 +61,9 @@ def tetris_logic():
     print(collect.text)
 
 
-def restart():
-    reset = requests.delete(PATH_TO_SERVER+RESET, headers=headers2, json=success)
-    print(reset.text)
-    return reset.text
+def raund_info():
+    raund = requests.get(PATH_TO_SERVER+ROUND, headers=headers2)
+    return raund.text
 
 
 def generate_movet_movet(roudrev, i):
@@ -111,13 +110,15 @@ if universe.status_code == 200:
     end = find_stok(STOK)
     generate_path(end)
     roudrev = roud[-2::-1]
-    for i in range(len(roudrev)-1):
-        mv = generate_movet_movet(roudrev, i)
-        #time.sleep(0.15)
-        print(mv)
-        res = make_move(mv)
-        print(res)
+    # for i in range(len(roudrev)-1):
+    #     mv = generate_movet_movet(roudrev, i)
+    #     tetris_logic()
+    #     #time.sleep(0.15)
+    #     print(mv)
+    #     res = make_move(mv)
+    #     print(res)
     #restart()
+    roud()
 
     # for i in range(len(planets)-1):
     #     if planets[i][1] == start_pose:
