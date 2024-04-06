@@ -56,8 +56,8 @@ def make_move(movet_movet):
     return move_data.text
 
 
-def sent_data_collected_garb(collected_garb):
-    collect = requests.post(PATH_TO_SERVER+COLLECT, headers=headers3, json=collected_garb)
+def sent_data_collected_garb(data):
+    collect = requests.post(PATH_TO_SERVER+COLLECT, headers=headers3, json=data)
     print(collect.text)
 
 
