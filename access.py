@@ -1,7 +1,6 @@
 import requests
-from config import PATH_TO_SERVER, TOKEN, GET_UNIVERSE, TRAVEL, COLLECT
-from generate_path import Generate_path
-import json
+from config import PATH_TO_SERVER, TOKEN, GET_UNIVERSE, TRAVEL, COLLECT, RESET
+import time
 
 
 headers = {
@@ -42,17 +41,19 @@ collect_garb = {
 ]
 }
 }
-
+success = {
+    "success": True
+}
 
 # <--------------------- Главные функции запросов -------------------------->
 def get_universe():
-    data = requests.get(PATH_TO_SERVER+GET_UNIVERSE, headers=headers, json=movet_movet)
+    data = requests.get(PATH_TO_SERVER+GET_UNIVERSE, headers=headers)
     return data
 
 
 def make_move(movet_movet):
     move_data = requests.post(PATH_TO_SERVER+TRAVEL, headers=headers2, json=movet_movet)
-    print(move_data.text)
+    return move_data.text
 
 
 def tetris_logic():
@@ -60,40 +61,86 @@ def tetris_logic():
     print(collect.text)
 
 
-def generate_movet_movet(current_planet, next_planet):
+def restart():
+    reset = requests.delete(PATH_TO_SERVER+RESET, headers=headers2, json=success)
+    print(reset.text)
+    return reset.text
+
+
+def generate_movet_movet(roudrev, i):
     movet_movet = {
-        "planets": [
-        f"{current_planet}",
-        f"{next_planet}"
-        ]
+        "planets" : [roudrev[i], roudrev[i+1]]
     }
     return movet_movet
+
+
 
 
 # make_move()
 # tetris_logic()
 
-next_planets_way = []
-interest_points = []
-stok = "Eden"
+
+roud = []
+STOK = "Eden"
 
 
-def for_data_py():
-    universe = get_universe()
-    if universe.status_code == 200:
+def find_stok(stok):
+    for i in range(len(planets)-1):
+        if planets[i][1] == stok:
+            end = planets[i][1]
+            #last_planet = planets[i][0]
+            return end
 
-        data = universe.json()
-        planets = data.get("universe")
-        start_pose = data["universe"][0][0]
 
-        for i in range(len(planets)-1):
-            if planets[i][1] == start_pose:
-                last_planet = start_pose
-                next_planet = planets[i][1]
-                movet = generate_movet_movet(last_planet, next_planet)
-                make_move(movet)
+def generate_path(end):
+    if end == "Earth":
+        return roud
+    for j in range(len(planets)-1):
+        if planets[j][1] == end:
+            roud.append(end)
+            ends = planets[j][0]
+            roud.append(ends)
+            return generate_path(ends)
+
+
+universe = get_universe()
+if universe.status_code == 200:
+
+    data = universe.json()
+    planets = data.get("universe")
+    end = find_stok(STOK)
+    generate_path(end)
+    roudrev = roud[-2::-1]
+    for i in range(len(roudrev)-1):
+        mv = generate_movet_movet(roudrev, i)
+        #time.sleep(0.15)
+        print(mv)
+        res = make_move(mv)
+        print(res)
+    #restart()
+
+    # for i in range(len(planets)-1):
+    #     if planets[i][1] == start_pose:
+    #         last_planet = start_pose
+    #         next_planet = planets[i][1]
+    #         movet = generate_movet_movet(last_planet, next_planet)
+    #         make_move(movet)
 
 
 
             #next_planets_way.append(planets[i])
     #print(next_planets_way)
+# class Generate_path:
+#     def __init__(self):
+#         pass
+
+#     def find_stok(stok):
+#         for i in range(len(planets)):
+#             if planets[i][1] == stok:
+#                 end = planets[i][1]
+#         return end
+
+#     def generate_path(end):
+#         for j in range(len(planets)):
+#             if planets[i][1] == end:
+#                 last_planet = planets[i][0]
