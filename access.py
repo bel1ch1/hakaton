@@ -57,9 +57,15 @@ def make_move(movet_movet):
     return move_data.text
 
 
+<<<<<<< HEAD
 def sent_data_collected_garb(collected_garb):
     collect = requests.post(PATH_TO_SERVER+COLLECT, headers=headers3, json=collected_garb)
     return collect.text
+=======
+def sent_data_collected_garb(data):
+    collect = requests.post(PATH_TO_SERVER+COLLECT, headers=headers3, json=data)
+    print(collect.text)
+>>>>>>> c66065a7a21fdd04f286951db2cb469a4bf44bea
 
 
 def raund_info():
